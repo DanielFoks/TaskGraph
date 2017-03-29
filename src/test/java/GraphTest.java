@@ -1,11 +1,16 @@
+import com.google.common.collect.Lists;
+import org.junit.Assert;
 import org.junit.Test;
+import java.util.List;
 
 
 public class GraphTest {
     @Test
     public void testGraph1() {
         Graph graph = new Graph.Builder().edge(1,2,10).edge(2,3,15).build();
-        graph.optimalWay(1,2);
+        List<Integer> list = Lists.newArrayList(2,1);
+        PathGraph pathGraph = new PathGraph(list);
+        Assert.assertEquals(pathGraph,graph.optimalWay(1,2));
     }
 
     @Test
@@ -22,18 +27,20 @@ public class GraphTest {
                 .edge(5,3,10)
                 .edge(3,5,10)
                 .build();
-        graph.optimalWay(1,4);
+        List<Integer> list = Lists.newArrayList(4,5,1);
+        PathGraph pathGraph = new PathGraph(list);
+        Assert.assertEquals(pathGraph,graph.optimalWay(1,4));
     }
 
     @Test
     public void testGraph3() {
         Graph graph = new Graph.Builder().edge(1,2,10).edge(3, 6, 15).edge(4, 5, 10).edge(5,6,20).build();
-        graph.optimalWay(1,6);
+        Assert.assertNull(graph.optimalWay(1,6));
     }
 
     @Test
     public void testGraph4() {
         Graph graph = new Graph.Builder().edge(-1,-2,10).edge(12,3,-1).build();
-        graph.optimalWay(1,2);
+        Assert.assertNull(graph.optimalWay(1, 2));
     }
 }

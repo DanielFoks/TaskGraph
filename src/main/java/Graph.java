@@ -1,14 +1,15 @@
+import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 
 import java.util.*;
 
 public final class Graph {
-    private final ArrayList<Edge> edges;
-    private final ArrayList<Integer> vertices;
+    private final List<Edge> edges;
+    private final List<Integer> vertices;
     private static final Logger log = Logger.getLogger(Graph.class);
 
     public static class Builder{
-        private final  ArrayList<Edge> edges = new ArrayList<>();
+        private final  List<Edge> edges = Lists.newArrayList();
         public Builder() {
         }
         public Builder edge(int verticesBegin,int verticesEnd,int weight) {
@@ -29,7 +30,7 @@ public final class Graph {
 
     private Graph(Builder builder){
         edges = builder.edges;
-        vertices = new ArrayList<>();
+        vertices = Lists.newArrayList();
         addVertices();
     }
 
@@ -92,10 +93,10 @@ public final class Graph {
         return true;
     }
 
-    public void optimalWay(int vertexFrom,int vertexTo){
+    public PathGraph optimalWay(int vertexFrom,int vertexTo){
         if (!vertices.contains(vertexFrom)||!vertices.contains(vertexTo)){
             log.error("One of the vertices is not found");
-        return;
+        return null;
         }
 
         int[][] graph = getGraphMatrix();
@@ -139,20 +140,28 @@ public final class Graph {
 
         vertexTo = vertices.indexOf(vertexTo);
 
-        StringBuilder stringBuilder = new StringBuilder();
+
 
         if (weightsVertices[vertexTo]<=0 || weightsVertices[vertexTo]==Integer.MAX_VALUE){
             log.error("Optimal way is impossible to find");
             System.err.println("Optimal way is impossible to find");
+            return null;
         }else {
 
+            List<Integer> path = Lists.newArrayList();
+
             while (vertexTo!=vertexFrom){
-                stringBuilder.append(vertices.get(vertexTo)+">-");
+                path.add(vertices.get(vertexTo));
                 vertexTo = vector[vertexTo];
             }
 
-            log.info("Optimal way was found (" + vertices.get(vertexFrom) + "" + stringBuilder.reverse() + ")");
-            System.out.println("Optimal way was found (" + vertices.get(vertexFrom) + "" + stringBuilder + ")");
+            path.add(vertices.get(vertexFrom));
+
+            PathGraph pathGraph = new PathGraph(path);
+
+            log.info("Optimal way was found (" + pathGraph + ")");
+            System.out.println("Optimal way was found (" + pathGraph + ")");
+            return pathGraph;
         }
     }
 
