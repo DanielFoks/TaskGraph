@@ -6,7 +6,7 @@ import java.util.List;
 
 public class GraphTest {
     @Test
-    public void testGraph1() {
+    public void normalTestGraph() {
         Graph graph = new Graph.Builder().edge(1,2,10).edge(2,3,15).build();
         List<Integer> list = Lists.newArrayList(2,1);
         PathGraph pathGraph = new PathGraph(list);
@@ -14,7 +14,7 @@ public class GraphTest {
     }
 
     @Test
-    public void testGraph2() {
+    public void testWithMoreVertices() {
         Graph graph = new Graph.Builder()
                 .edge(1, 2, 10)
                 .edge(1, 5, 10)
@@ -33,13 +33,13 @@ public class GraphTest {
     }
 
     @Test
-    public void testGraph3() {
+    public void impossibleFindOptinalWay() {
         Graph graph = new Graph.Builder().edge(1,2,10).edge(3, 6, 15).edge(4, 5, 10).edge(5,6,20).build();
         Assert.assertNull(graph.optimalWay(1,6));
     }
 
     @Test
-    public void testGraph4() {
+    public void incorrectArguments() {
         Graph graph = new Graph.Builder().edge(-1,-2,10).edge(12,3,-1).build();
         Assert.assertNull(graph.optimalWay(1, 2));
     }
