@@ -1,12 +1,36 @@
 import org.apache.log4j.Logger;
 
+/**
+ * This thread safe class implies an edge in the graph
+ * @author Danil Tkachuk
+ */
 public final class Edge {
+    /**
+     *
+     * Initial vertex of an edge
+     */
     private final int vertexBegin;
+    /**
+     * Terminal vertex of an edge
+     */
     private final int vertexEnd;
+    /**
+     * Weight of an edge
+     */
     private final int weight;
 
+    /**
+     * log4j logger
+     */
     private static final Logger log =  Logger.getLogger(Edge.class);
 
+    /**
+     *
+     * @param vertexBegin Initial vertex of an edge
+     * @param vertexEnd Terminal vertex of an edge
+     * @param weight Weight of an edge
+     * @throws Exception When vertexBegin,vertexEnd,weight = 0 throw Exception
+     */
     public Edge(int vertexBegin, int vertexEnd, int weight) throws Exception {
         this.vertexBegin = vertexBegin;
         this.vertexEnd = vertexEnd;
@@ -21,14 +45,26 @@ public final class Edge {
 
     }
 
+    /**
+     *
+     * @return Initial vertex of an edge
+     */
     public int getVertexBegin() {
         return vertexBegin;
     }
 
+    /**
+     *
+     * @return Terminate vertex of an edge
+     */
     public int getVertexEnd() {
         return vertexEnd;
     }
 
+    /**
+     *
+     * @return Weight of an edge
+     */
     public int getWeight() {
         return weight;
     }

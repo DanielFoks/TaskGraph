@@ -33,7 +33,7 @@ public class GraphTest {
     }
 
     @Test
-    public void impossibleFindOptinalWay() {
+    public void impossibleFindOptimalWay() {
         Graph graph = new Graph.Builder().edge(1,2,10).edge(3, 6, 15).edge(4, 5, 10).edge(5,6,20).build();
         Assert.assertNull(graph.optimalWay(1,6));
     }

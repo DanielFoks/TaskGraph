@@ -3,35 +3,78 @@ import org.apache.log4j.Logger;
 
 import java.util.*;
 
+/**
+ * This class is oriented graph
+ *
+ * @author Danil Tkachuk
+ */
 public final class Graph {
+    /**
+     * List of edges in graph
+     */
     private final List<Edge> edges;
+    /**
+     * List of vertices in graph
+     */
     private final List<Integer> vertices;
+    /**
+     * The graph is represented as a matrix
+     */
     private final int[][] matrix;
+
+    /**
+     * log4j logger
+     */
     private static final Logger log = Logger.getLogger(Graph.class);
 
+
+    /**
+     * This inner class is Builder pattern class for build the new graph
+     */
     public static class Builder {
+        /**
+         * List of edges
+         */
         private final List<Edge> edges = Lists.newArrayList();
 
+        /**
+         * Default constructor
+         */
         public Builder() {
         }
 
+        /**
+         * @param verticesBegin Initial vertex of an edge
+         * @param verticesEnd   Terminal vertex of an edge
+         * @param weight        Weight of an edge
+         * @return Builder. Add the new edge to graph
+         */
         public Builder edge(int verticesBegin, int verticesEnd, int weight) {
             try {
                 edges.add(new Edge(verticesBegin, verticesEnd, weight));
             } catch (Exception e) {
-                System.err.println("Edge {" + verticesBegin + " | " + verticesEnd + " | " + weight + "} can not create");
                 log.error("Can not create an edge with these conditions");
             }
             log.info("Edge was added to Graph");
             return this;
         }
 
+        /**
+         * Build the new graph
+         *
+         * @return Graph
+         */
         public Graph build() {
             log.info("Graph was created from Builder");
             return new Graph(this);
         }
     }
 
+    /**
+     * Closed constructor
+     *
+     * @param builder Inner class is Builder pattern class for build the new graph
+     */
     private Graph(Builder builder) {
         edges = builder.edges;
         vertices = Lists.newArrayList();
@@ -39,6 +82,11 @@ public final class Graph {
         matrix = getGraphMatrix();
     }
 
+    /**
+     * Create the matrix from graph
+     *
+     * @return The graph is represented as a matrix
+     */
     private int[][] getGraphMatrix() {
         int[][] matrix = new int[vertices.size()][vertices.size()];
         for (Edge edge : edges) {
@@ -50,6 +98,9 @@ public final class Graph {
         return matrix;
     }
 
+    /**
+     * Add all vertices to vertices list
+     */
     private void addVertices() {
         HashSet<Integer> vertices = new HashSet<>();
         for (Edge edge : edges) {
@@ -62,6 +113,11 @@ public final class Graph {
         this.vertices.addAll(vertices);
     }
 
+    /**
+     * Check the graph for connectivity
+     *
+     * @return TRUE if graph is connected and FALSE if is not
+     */
     public boolean isConnected() {
         boolean[] used = new boolean[vertices.size()];
         int[] queue = new int[vertices.size()];
@@ -95,6 +151,13 @@ public final class Graph {
         return true;
     }
 
+    /**
+     * Look for the optimal way
+     *
+     * @param vertexFrom Initial vertex for search
+     * @param vertexTo   Terminate vertex for search
+     * @return PathGraph object
+     */
     public PathGraph optimalWay(int vertexFrom, int vertexTo) {
         if (!vertices.contains(vertexFrom) || !vertices.contains(vertexTo)) {
             log.error("One of the vertices is not found");
@@ -145,7 +208,6 @@ public final class Graph {
 
         if (weightsVertices[vertexTo] <= 0 || weightsVertices[vertexTo] == Integer.MAX_VALUE) {
             log.error("Optimal way is impossible to find");
-            System.err.println("Optimal way is impossible to find");
             return null;
         } else {
 
@@ -161,7 +223,6 @@ public final class Graph {
             PathGraph pathGraph = new PathGraph(path);
 
             log.info("Optimal way was found (" + pathGraph + ")");
-            System.out.println("Optimal way was found (" + pathGraph + ")");
             return pathGraph;
         }
     }
